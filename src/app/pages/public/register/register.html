@@ -45,7 +45,17 @@
         }
       </mat-form-field>
 
-      <button mat-flat-button color="primary" type="submit">Register</button>
+      @if (errorMessage()) {
+        <p class="auth-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="isLoading()">
+        @if (isLoading()) {
+          Creando cuenta...
+        } @else {
+          Register
+        }
+      </button>
     </form>
   </mat-card-content>
   <mat-card-actions>

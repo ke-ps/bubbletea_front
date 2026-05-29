@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { passwordsMatchValidator } from '../../../shared/utils';
+import { AuthService, getAuthErrorMessage } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,12 @@ import { passwordsMatchValidator } from '../../../shared/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Register {
+  private readonly authService = inject(AuthService);
   private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+
+  protected readonly errorMessage = signal('');
+  protected readonly isLoading = signal(false);
 
   protected readonly form = this.fb.nonNullable.group(
     {
@@ -34,11 +40,23 @@ export class Register {
     { validators: passwordsMatchValidator() },
   );
 
-  protected submit(): void {
+  protected async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    console.log('Register', this.form.getRawValue());
+
+    this.errorMessage.set('');
+    this.isLoading.set(true);
+
+    try {
+      const { email, password, name } = this.form.getRawValue();
+      await this.authService.register(email, password, name);
+      await this.router.navigateByUrl('/home');
+    } catch (error) {
+      this.errorMessage.set(getAuthErrorMessage(error));
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

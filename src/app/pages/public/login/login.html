@@ -23,7 +23,17 @@
         }
       </mat-form-field>
 
-      <button mat-flat-button color="primary" type="submit">Login</button>
+      @if (errorMessage()) {
+        <p class="auth-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="isLoading()">
+        @if (isLoading()) {
+          Entrando...
+        } @else {
+          Login
+        }
+      </button>
     </form>
   </mat-card-content>
   <mat-card-actions>
