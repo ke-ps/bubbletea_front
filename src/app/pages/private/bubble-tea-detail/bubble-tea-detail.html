@@ -1,0 +1,42 @@
+<main class="detail-page">
+  <header class="detail-header">
+    <button mat-icon-button (click)="goBack()" class="back-button" aria-label="Volver">
+      ←
+    </button>
+    <h1>Detalle de Bubble Tea</h1>
+  </header>
+
+  @if (bubbleTeaDetail(); as tea) {
+    <article class="detail-card">
+      <div class="detail-image">
+        <img
+          src="https://images.unsplash.com/photo-1599599810694-b5ac4dd33c86?w=400&h=400&fit=crop"
+          alt="{{ tea.name }}"
+        >
+      </div>
+      <div class="detail-content">
+        <h2>{{ tea.name }}</h2>
+        <div class="detail-info">
+          <p class="temperature">
+            <strong>Temperatura:</strong> {{ tea.temperature }}
+          </p>
+          <p class="price">
+            <strong>Precio:</strong> {{ tea.price }}€
+          </p>
+          <p class="status">
+            <strong>Estado:</strong>
+            <span [class.active]="tea.active">
+              {{ tea.active ? 'Disponible' : 'No disponible' }}
+            </span>
+          </p>
+        </div>
+        <div class="actions">
+          <button mat-raised-button color="primary">Añadir al carrito</button>
+          <button mat-stroked-button (click)="goBack()">Volver</button>
+        </div>
+      </div>
+    </article>
+  } @else {
+    <div class="loading">Cargando detalle...</div>
+  }
+</main>

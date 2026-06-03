@@ -11,7 +11,7 @@ import {
   updateProfile,
   User,
 } from 'firebase/auth';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 import { firebaseConfig } from '../../environments/firebase.config';
 
@@ -44,6 +44,11 @@ export class AuthService {
 
   logout(): Promise<void> {
     return signOut(auth);
+  }
+
+  async getIdToken(): Promise<string | null> {
+    const user = auth.currentUser ?? (await firstValueFrom(this.userOnce()));
+    return user?.getIdToken() ?? null;
   }
 
   userOnce(): Observable<User | null> {

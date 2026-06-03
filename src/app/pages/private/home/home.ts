@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { bubbleTeas } from '../../../core/bubble-teas';
+
+import { BubbleTeaService } from '../../../core/bubble-teas';
 
 import { AuthService } from '../../../core/auth.service';
 
@@ -12,11 +13,15 @@ import { AuthService } from '../../../core/auth.service';
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Home {
-  protected readonly authService = inject(AuthService);
-  protected readonly bubbleTeas = bubbleTeas;
+export class Home implements OnInit {
+  protected readonly bubbleTeaService = inject(BubbleTeaService);
 
   private readonly router = inject(Router);
+  protected readonly authService = inject(AuthService);
+
+  ngOnInit(): void {
+    this.bubbleTeaService.getAll().subscribe();
+  }
 
   protected async logout(): Promise<void> {
     await this.authService.logout();

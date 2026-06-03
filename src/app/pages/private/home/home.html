@@ -12,16 +12,14 @@
 </header>
 
 <section class="bubble-tea-list" aria-label="Listado de bubble teas">
-    @for (bubbleTea of bubbleTeas; track bubbleTea.id) {
-      <a class="bubble-tea-card" [routerLink]="['/bubble-teas', bubbleTea.id]">
-        <img [src]="bubbleTea.imageUrl" [alt]="bubbleTea.name" />
-
-        <div>
-          <h2>{{ bubbleTea.name }}</h2>
-          <p>{{ bubbleTea.flavor }}</p>
-          <strong>{{ bubbleTea.price }} €</strong>
-        </div>
-      </a>
-    }
-  </section>
+  @for (bubbleTea of bubbleTeaService.bubbleTeas(); track bubbleTea.id) {
+    <a class="bubble-tea-card" [routerLink]="['/bubble-teas', bubbleTea.id]">
+      <div>
+        <h2>{{ bubbleTea.name }}</h2>
+        <p>{{ bubbleTea.temperature }}</p>
+        <strong>{{ bubbleTea.price }} €</strong>
+      </div>
+    </a>
+  }
+</section>
 </main>

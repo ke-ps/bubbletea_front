@@ -1,35 +1,50 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+
 export type BubbleTea = {
-  id: string;
+  id: number;
   name: string;
-  flavor: string;
+  temperature: string;
   price: number;
-  description: string;
-  imageUrl: string;
+  active: boolean;
 };
 
-export const bubbleTeas: BubbleTea[] = [
-  {
-    id: '1',
-    name: 'Classic Milk Tea',
-    flavor: 'Black tea, milk and tapioca pearls',
-    price: 4.5,
-    description: 'The classic bubble tea with black tea, creamy milk and chewy tapioca pearls.',
-    imageUrl: 'https://images.unsplash.com/photo-1558857563-b371033873b8?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    id: '2',
-    name: 'Matcha Bubble Tea',
-    flavor: 'Matcha, milk and tapioca pearls',
-    price: 5,
-    description: 'A soft matcha drink with milk and tapioca pearls.',
-    imageUrl: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    id: '3',
-    name: 'Strawberry Tea',
-    flavor: 'Strawberry, green tea and popping boba',
-    price: 4.8,
-    description: 'A fruity bubble tea with strawberry flavor and popping boba.',
-    imageUrl: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?q=80&w=800&auto=format&fit=crop',
-  },
-];
+@Injectable({
+  providedIn: 'root',
+})
+export class BubbleTeaService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/bubbleteas';
+
+  readonly bubbleTeas = signal<BubbleTea[]>([]);
+  readonly bubbleTeaDetail = signal<BubbleTea | null>(null);
+
+  getAll(): Observable<BubbleTea[]> {
+    return this.http.get<BubbleTea[]>(`${this.apiUrl}/`).pipe(
+      tap(data => this.bubbleTeas.set(data))
+    );
+  }
+
+  getById(id: number): Observable<BubbleTea> {
+    return this.http.get<BubbleTea>(`${this.apiUrl}/${id}`).pipe(
+      tap(data => this.bubbleTeaDetail.set(data))
+    );
+  }
+
+  create(bubbleTea: Omit<BubbleTea, 'id'>): Observable<BubbleTea> {
+    return this.http.post<BubbleTea>(`${this.apiUrl}/`, bubbleTea);
+  }
+
+  update(id: number, bubbleTea: Omit<BubbleTea, 'id'>): Observable<BubbleTea> {
+    return this.http.put<BubbleTea>(`${this.apiUrl}/${id}`, bubbleTea);
+  }
+
+  patch(id: number, bubbleTea: Partial<Omit<BubbleTea, 'id'>>): Observable<BubbleTea> {
+    return this.http.patch<BubbleTea>(`${this.apiUrl}/${id}`, bubbleTea);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}

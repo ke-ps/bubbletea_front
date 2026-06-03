@@ -15,10 +15,18 @@ export const routes: Routes = [
     canActivate: [publicGuard],
     loadComponent: () => import('./pages/public/register/register').then((m) => m.Register),
   },
-  {
+{
     path: 'home',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/private/home/home').then((m) => m.Home),
+  },
+  {
+    path: 'bubble-teas/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/private/bubble-tea-detail/bubble-tea-detail').then(
+        (m) => m.BubbleTeaDetail,
+      ),
   },
   {
     path: '**',
