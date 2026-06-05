@@ -21,6 +21,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/private/home/home').then((m) => m.Home),
   },
   {
+    path: 'cart',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/private/cart/cart').then((m) => m.Cart),
+  },
+  {
     path: 'trash',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/private/trash/trash').then((m) => m.Trash),

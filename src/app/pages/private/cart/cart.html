@@ -1,0 +1,71 @@
+<main class="cart-page">
+  <header class="cart-header">
+    <button mat-icon-button routerLink="/home" aria-label="Volver al inicio">
+      ←
+    </button>
+    <h1>
+      <mat-icon>shopping_cart</mat-icon>
+      Carrito
+    </h1>
+  </header>
+
+  @if (cartService.items().length > 0) {
+    <section class="cart-list">
+      @for (item of cartService.items(); track item.tea.id) {
+        <article class="cart-item">
+          <div class="cart-item__info">
+            <h2>{{ item.tea.name }}</h2>
+            <p>{{ item.tea.temperature }}</p>
+            <strong>{{ item.tea.price }}€ / ud.</strong>
+          </div>
+
+          <div class="cart-item__quantity">
+            <button mat-icon-button (click)="decrease(item.tea.id)" aria-label="Reducir cantidad">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="quantity-value">{{ item.quantity }}</span>
+            <button mat-icon-button (click)="increase(item.tea.id)" aria-label="Aumentar cantidad">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <div class="cart-item__subtotal">
+            <strong>{{ (item.tea.price * item.quantity).toFixed(2) }}€</strong>
+          </div>
+
+          <div class="cart-item__actions">
+            <button mat-stroked-button [routerLink]="['/bubble-teas', item.tea.id, 'edit']">
+              <mat-icon>edit</mat-icon>
+              Editar
+            </button>
+            <button mat-icon-button color="warn" (click)="remove(item.tea.id)" aria-label="Eliminar del carrito">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </article>
+      }
+    </section>
+
+    <footer class="cart-footer">
+      <div class="cart-total">
+        <span>Total ({{ cartService.totalItems() }} uds.)</span>
+        <strong>{{ cartService.totalPrice().toFixed(2) }}€</strong>
+      </div>
+      <div class="cart-footer__actions">
+        <button mat-stroked-button color="warn" (click)="clearCart()">
+          <mat-icon>remove_shopping_cart</mat-icon>
+          Vaciar carrito
+        </button>
+        <button mat-flat-button color="primary" routerLink="/home">
+          Seguir comprando
+        </button>
+      </div>
+    </footer>
+  } @else {
+    <div class="cart-empty">
+      <mat-icon>shopping_cart</mat-icon>
+      <p>Tu carrito está vacío.</p>
+      <button mat-flat-button color="primary" routerLink="/home">Ver Bubble Teas</button>
+    </div>
+  }
+</main>

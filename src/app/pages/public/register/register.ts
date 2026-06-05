@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { firstValueFrom } from 'rxjs';
 import { passwordsMatchValidator } from '../../../shared/utils';
 import { AuthService, getAuthErrorMessage } from '../../../core/auth.service';
 import { UserService } from '../../../core/user.service';
@@ -59,6 +60,7 @@ export class Register {
     try {
       const { email, password, name, surname, birth_date, notifications } = this.form.getRawValue();
       await this.authService.register(email, password, name);
+      await firstValueFrom(this.userService.createProfile({ name, surname, birth_date, notifications }));
       await this.router.navigateByUrl('/home');
     } catch (error) {
       this.errorMessage.set(getAuthErrorMessage(error));

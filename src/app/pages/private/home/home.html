@@ -14,9 +14,12 @@
         <mat-icon>add</mat-icon>
         Nuevo
       </button>
-      <button mat-stroked-button type="button" routerLink="/trash">
-        <mat-icon>delete</mat-icon>
-        Papelera
+      <button mat-stroked-button type="button" routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        Carrito
+        @if (cartService.totalItems() > 0) {
+          <span class="cart-badge">{{ cartService.totalItems() }}</span>
+        }
       </button>
       <button mat-button type="button" (click)="logout()">Cerrar sesión</button>
     </div>
@@ -31,19 +34,9 @@
           <strong>{{ bubbleTea.price }} €</strong>
         </a>
         <div class="bubble-tea-card__actions">
-          <button mat-button type="button" [routerLink]="['/bubble-teas', bubbleTea.id, 'edit']">
-            <mat-icon>edit</mat-icon>
-            Editar
-          </button>
-          <button
-            mat-button
-            type="button"
-            class="danger"
-            [disabled]="deletingId() === bubbleTea.id"
-            (click)="softDelete(bubbleTea)"
-          >
-            <mat-icon>delete</mat-icon>
-            Eliminar
+          <button mat-button type="button" [routerLink]="['/bubble-teas', bubbleTea.id]">
+            <mat-icon>info</mat-icon>
+            Detalles
           </button>
         </div>
       </article>

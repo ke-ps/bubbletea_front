@@ -31,7 +31,13 @@
           </p>
         </div>
         <div class="actions">
-          <button mat-raised-button color="primary">Añadir al carrito</button>
+          <button mat-raised-button color="primary" (click)="addToCart(tea)">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Añadir al carrito
+          </button>
+          @if (addedToCart()) {
+            <span class="added-feedback">✓ Añadido al carrito</span>
+          }
           <button mat-stroked-button (click)="goBack()">Volver</button>
         </div>
       </div>
