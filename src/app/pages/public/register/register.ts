@@ -59,7 +59,6 @@ export class Register {
     try {
       const { email, password, name, surname, birth_date, notifications } = this.form.getRawValue();
       await this.authService.register(email, password, name);
-      await this.userService.createProfile({ name, surname, birth_date, notifications }).toPromise();
       await this.router.navigateByUrl('/home');
     } catch (error) {
       this.errorMessage.set(getAuthErrorMessage(error));
