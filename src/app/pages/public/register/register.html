@@ -17,9 +17,25 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
-        <input matInput type="text" formControlName="name" autocomplete="name" />
+        <input matInput type="text" formControlName="name" autocomplete="given-name" />
         @if (form.controls.name.touched && form.controls.name.hasError('required')) {
           <mat-error>Name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Surname</mat-label>
+        <input matInput type="text" formControlName="surname" autocomplete="family-name" />
+        @if (form.controls.surname.touched && form.controls.surname.hasError('required')) {
+          <mat-error>Surname is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Birth date</mat-label>
+        <input matInput type="date" formControlName="birth_date" />
+        @if (form.controls.birth_date.touched && form.controls.birth_date.hasError('required')) {
+          <mat-error>Birth date is required</mat-error>
         }
       </mat-form-field>
 
@@ -44,6 +60,10 @@
           <mat-error>Passwords do not match</mat-error>
         }
       </mat-form-field>
+
+      <mat-checkbox formControlName="notifications">
+        Quiero recibir notificaciones
+      </mat-checkbox>
 
       @if (errorMessage()) {
         <p class="auth-error" role="alert">{{ errorMessage() }}</p>

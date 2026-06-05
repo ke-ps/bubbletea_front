@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { BubbleTea, BubbleTeaService } from '../../../core/bubble-teas';
 import { AuthService } from '../../../core/auth.service';
+import { UserService } from '../../../core/user.service';
 
 @Component({
   selector: 'app-home',
@@ -15,13 +16,15 @@ import { AuthService } from '../../../core/auth.service';
 })
 export class Home implements OnInit {
   protected readonly bubbleTeaService = inject(BubbleTeaService);
-  private readonly router = inject(Router);
   protected readonly authService = inject(AuthService);
+  protected readonly userService = inject(UserService);
 
+  private readonly router = inject(Router);
   protected readonly deletingId = signal<number | null>(null);
 
   ngOnInit(): void {
     this.bubbleTeaService.getAll().subscribe();
+    this.userService.getMe().subscribe();
   }
 
   protected softDelete(tea: BubbleTea): void {

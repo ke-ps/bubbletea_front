@@ -2,7 +2,9 @@
   <header class="home-header">
     <div>
       <h1>Bubble Teas</h1>
-      @if (authService.currentUser(); as user) {
+      @if (userService.currentProfile(); as profile) {
+        <p>¡Hola, {{ profile.name }}!</p>
+      } @else if (authService.currentUser(); as user) {
         <p>Sesión iniciada como {{ user.displayName || user.email }}</p>
       }
     </div>
