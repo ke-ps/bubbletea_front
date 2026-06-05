@@ -1,0 +1,45 @@
+<main class="trash-page">
+  <header class="trash-header">
+    <button mat-stroked-button type="button" routerLink="/home">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </button>
+    <h1>Papelera</h1>
+  </header>
+
+  <section class="trash-list" aria-label="Bubble teas eliminados">
+    @for (bubbleTea of bubbleTeaService.trashedBubbleTeas(); track bubbleTea.id) {
+      <article class="trash-card">
+        <div class="trash-card__body">
+          <h2>{{ bubbleTea.name }}</h2>
+          <p>{{ bubbleTea.temperature }}</p>
+          <strong>{{ bubbleTea.price }} €</strong>
+        </div>
+        <div class="trash-card__actions">
+          <button
+            mat-button
+            type="button"
+            color="primary"
+            [disabled]="pendingId() === bubbleTea.id"
+            (click)="restore(bubbleTea)"
+          >
+            <mat-icon>restore_from_trash</mat-icon>
+            Restaurar
+          </button>
+          <button
+            mat-button
+            type="button"
+            class="danger"
+            [disabled]="pendingId() === bubbleTea.id"
+            (click)="permanentDelete(bubbleTea)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+            Eliminar definitivamente
+          </button>
+        </div>
+      </article>
+    } @empty {
+      <p class="empty-state">La papelera está vacía.</p>
+    }
+  </section>
+</main>
