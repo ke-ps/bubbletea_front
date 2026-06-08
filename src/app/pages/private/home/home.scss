@@ -34,22 +34,6 @@
   flex-wrap: wrap;
 }
 
-.cart-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #e53935;
-  color: white;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  font-weight: 700;
-  min-width: 1.2rem;
-  height: 1.2rem;
-  padding: 0 0.25rem;
-  margin-left: 0.25rem;
-  line-height: 1;
-}
-
 .bubble-tea-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -63,6 +47,13 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   background: white;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &.deleting {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
 }
 
 .bubble-tea-card__body {

@@ -10,7 +10,7 @@ export type BubbleTea = {
   active: boolean;
 };
 
-export type BubbleTeaPayload = Omit<BubbleTea, 'id' | 'active'>;
+export type BubbleTeaPayload = Omit<BubbleTea, 'id'>;
 
 @Injectable({
   providedIn: 'root',
