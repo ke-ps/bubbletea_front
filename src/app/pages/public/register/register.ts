@@ -11,6 +11,7 @@ import { passwordsMatchValidator } from '../../../shared/utils';
 import { AuthService, getAuthErrorMessage } from '../../../core/auth.service';
 import { UserService } from '../../../core/user.service';
 
+
 @Component({
   selector: 'app-register',
   imports: [
@@ -60,6 +61,7 @@ export class Register {
     try {
       const { email, password, name, surname, birth_date, notifications } = this.form.getRawValue();
       await this.authService.register(email, password, name);
+      await firstValueFrom(this.authService.userOnce());
       await firstValueFrom(this.userService.createProfile({ name, surname, birth_date, notifications }));
       await this.router.navigateByUrl('/home');
     } catch (error) {

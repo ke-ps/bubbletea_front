@@ -36,11 +36,13 @@ export class AuthService {
     return signInWithEmailAndPassword(auth, email, password).then(() => undefined);
   }
 
-  async register(email: string, password: string, name: string): Promise<void> {
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(credential.user, { displayName: name });
-    this.currentUser.set(credential.user);
-  }
+ async register(email: string, password: string, name: string): Promise<string> {
+  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(credential.user, { displayName: name });
+  const token = await credential.user.getIdToken();
+  this.currentUser.set(credential.user);
+  return token;
+}
 
   logout(): Promise<void> {
     return signOut(auth);
