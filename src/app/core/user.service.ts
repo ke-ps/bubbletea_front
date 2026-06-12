@@ -7,9 +7,10 @@ export type User = {
   name: string;
   surname: string;
   email: string;
-  birth_date: string;
+  birth_date: string | null;
   active: boolean;
   notifications: boolean;
+  role: string;
 };
 
 export type UserCreate = {

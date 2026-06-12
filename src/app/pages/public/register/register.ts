@@ -60,11 +60,22 @@ export class Register {
 
     try {
       const { email, password, name, surname, birth_date, notifications } = this.form.getRawValue();
+      
+      console.log('1. Registrando en Firebase...');
       await this.authService.register(email, password, name);
-      await firstValueFrom(this.authService.userOnce());
+      console.log('2. Firebase OK');
+      
+      // Esperar a que el token esté listo
+      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log('3. Token debería estar listo');
+      
+      console.log('4. Creando perfil en MySQL...');
       await firstValueFrom(this.userService.createProfile({ name, surname, birth_date, notifications }));
+      console.log('5. Perfil creado OK');
+      
       await this.router.navigateByUrl('/home');
     } catch (error) {
+      console.error('Error en registro:', error);
       this.errorMessage.set(getAuthErrorMessage(error));
     } finally {
       this.isLoading.set(false);

@@ -1,6 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { from, switchMap } from 'rxjs';
+import { catchError, from, switchMap, throwError } from 'rxjs';
 
 import { AuthService } from './auth.service';
 
@@ -14,6 +14,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (request, next) => {
   return from(authService.getIdToken()).pipe(
     switchMap((token) => {
       if (!token) {
+        console.warn('No token available for request:', request.url);
         return next(request);
       }
 
@@ -24,6 +25,10 @@ export const authTokenInterceptor: HttpInterceptorFn = (request, next) => {
           },
         }),
       );
+    }),
+    catchError((error) => {
+      console.error('Auth interceptor error:', error);
+      return throwError(() => error);
     }),
   );
 };
