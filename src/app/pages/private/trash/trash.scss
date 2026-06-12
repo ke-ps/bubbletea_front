@@ -1,0 +1,71 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.trash-page {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.trash-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.trash-header h1 {
+  margin: 0;
+}
+
+.trash-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.trash-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+.trash-card__body {
+  padding: 1rem;
+}
+
+.trash-card__body h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.trash-card__body p {
+  margin: 0 0 0.75rem;
+  color: #5f6368;
+}
+
+.trash-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.danger {
+  color: #b3261e;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #5f6368;
+  padding: 2rem 0;
+}

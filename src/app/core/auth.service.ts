@@ -36,20 +36,29 @@ export class AuthService {
     return signInWithEmailAndPassword(auth, email, password).then(() => undefined);
   }
 
-  async register(email: string, password: string, name: string): Promise<void> {
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(credential.user, { displayName: name });
-    this.currentUser.set(credential.user);
-  }
+ async register(email: string, password: string, name: string): Promise<string> {
+  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(credential.user, { displayName: name });
+  // Force refresh the token immediately after registration
+  await credential.user.reload();
+  const token = await credential.user.getIdToken();
+  this.currentUser.set(credential.user);
+  return token;
+}
 
   logout(): Promise<void> {
     return signOut(auth);
   }
 
-  async getIdToken(): Promise<string | null> {
-    const user = auth.currentUser ?? (await firstValueFrom(this.userOnce()));
-    return user?.getIdToken() ?? null;
+async getIdToken(): Promise<string | null> {
+  const user = auth.currentUser ?? (await firstValueFrom(this.userOnce()));
+  if (!user) {
+    return null;
   }
+  // Force refresh to get a valid token
+  await user.reload();
+  return user.getIdToken();
+}
 
   userOnce(): Observable<User | null> {
     return new Observable<User | null>((subscriber) => {

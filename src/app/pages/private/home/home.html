@@ -1,25 +1,52 @@
 <main class="home-page">
   <header class="home-header">
     <div>
-  <h1>Bubble Teas</h1>
+      <h1>Bubble Teas</h1>
+      @if (userService.currentProfile(); as profile) {
+        <p>¡Hola, {{ profile.name }}!</p>
+      } @else if (authService.currentUser(); as user) {
+        <p>Sesión iniciada como {{ user.displayName || user.email }}</p>
+      }
+    </div>
 
-  @if (authService.currentUser(); as user) {
-    <p>Sesión iniciada como {{ user.displayName || user.email }}</p>
-  }
-</div>
+    <div class="home-actions">
+      <button mat-flat-button color="primary" type="button" routerLink="/bubble-teas/new">
+        <mat-icon>add</mat-icon>
+        Nuevo
+      </button>
+      <button mat-stroked-button type="button" routerLink="/trash">
+        <mat-icon>delete</mat-icon>
+        Papelera
+      </button>
+      <button mat-button type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </header>
 
-  <button mat-flat-button color="primary" type="button" (click)="logout()">Cerrar sesión</button>
-</header>
-
-<section class="bubble-tea-list" aria-label="Listado de bubble teas">
-  @for (bubbleTea of bubbleTeaService.bubbleTeas(); track bubbleTea.id) {
-    <a class="bubble-tea-card" [routerLink]="['/bubble-teas', bubbleTea.id]">
-      <div>
-        <h2>{{ bubbleTea.name }}</h2>
-        <p>{{ bubbleTea.temperature }}</p>
-        <strong>{{ bubbleTea.price }} €</strong>
-      </div>
-    </a>
-  }
-</section>
+  <section class="bubble-tea-list" aria-label="Listado de bubble teas">
+    @for (bubbleTea of bubbleTeaService.bubbleTeas(); track bubbleTea.id) {
+      <article class="bubble-tea-card" [class.deleting]="deletingIds().has(bubbleTea.id)">
+        <a class="bubble-tea-card__body" [routerLink]="['/bubble-teas', bubbleTea.id]">
+          <h2>{{ bubbleTea.name }}</h2>
+          <p>{{ bubbleTea.temperature }}</p>
+          <strong>{{ bubbleTea.price }} €</strong>
+        </a>
+        <div class="bubble-tea-card__actions">
+          <button mat-button type="button" [routerLink]="['/bubble-teas', bubbleTea.id]">
+            <mat-icon>info</mat-icon>
+            Detalles
+          </button>
+          <button mat-button type="button" (click)="edit(bubbleTea)">
+            <mat-icon>edit</mat-icon>
+            Editar
+          </button>
+          <button mat-button type="button" (click)="delete(bubbleTea)">
+            <mat-icon>delete</mat-icon>
+            Eliminar
+          </button>
+        </div>
+      </article>
+    } @empty {
+      <p class="empty-state">No hay bubble teas todavía. Crea el primero con el botón «Nuevo».</p>
+    }
+  </section>
 </main>

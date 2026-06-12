@@ -31,7 +31,10 @@
           </p>
         </div>
         <div class="actions">
-          <button mat-raised-button color="primary">Añadir al carrito</button>
+          <button mat-raised-button color="primary" (click)="edit()">
+            <mat-icon>edit</mat-icon>
+            Editar
+          </button>
           <button mat-stroked-button (click)="goBack()">Volver</button>
         </div>
       </div>

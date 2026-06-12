@@ -14,6 +14,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
   margin-bottom: 2rem;
 }
 
@@ -26,6 +27,13 @@
   color: #5f6368;
 }
 
+.home-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .bubble-tea-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -33,36 +41,58 @@
 }
 
 .bubble-tea-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: white;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &.deleting {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+}
+
+.bubble-tea-card__body {
+  display: block;
+  padding: 1rem;
   color: inherit;
   text-decoration: none;
 }
 
-.bubble-tea-card img {
-  width: 100%;
-  height: 180px;
-  display: block;
-  object-fit: cover;
+.bubble-tea-card__body:hover {
+  background: #fafafa;
 }
 
-.bubble-tea-card div {
-  padding: 1rem;
-}
-
-.bubble-tea-card h2 {
+.bubble-tea-card__body h2 {
   margin: 0 0 0.5rem;
   font-size: 1.1rem;
 }
 
-.bubble-tea-card p {
+.bubble-tea-card__body p {
   margin: 0 0 0.75rem;
   color: #5f6368;
 }
 
-.bubble-tea-card strong {
+.bubble-tea-card__body strong {
   color: #1f1f1f;
+}
+
+.bubble-tea-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #5f6368;
+  padding: 2rem 0;
 }
